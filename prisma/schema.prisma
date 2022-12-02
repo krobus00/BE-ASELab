@@ -14,6 +14,8 @@ model User {
   id        Int     @id @default(autoincrement())
   email     String  @unique
   photo_url String?
+  role      Role    @relation(fields: [roleId], references: [id])
+  roleId    Int
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -29,6 +31,7 @@ model Role {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+  User       User[]
 
   @@map("roles")
 }
