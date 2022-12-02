@@ -11,6 +11,10 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  app.enableCors({
+    origin: process.env.FRONTEND_URL,
+  });
+
+  await app.listen(8080);
 }
 bootstrap();
