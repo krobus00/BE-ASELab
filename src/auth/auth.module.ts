@@ -4,11 +4,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtAccessStrategy } from './strategies';
 
 @Module({
   controllers: [AuthController],
   providers: [
     AuthService,
+    JwtAccessStrategy,
     {
       provide: 'GOOGLE_CLIENT',
       inject: [ConfigService],

@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleLoginDto } from './dto';
+import { JwtGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +13,7 @@ export class AuthController {
   }
 
   @Get('/check')
+  @UseGuards(JwtGuard)
   async check() {
     return { message: 'OK' };
   }
