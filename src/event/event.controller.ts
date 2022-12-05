@@ -11,9 +11,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { GetUserId } from 'src/auth/decorators';
+import { GetUserId, Roles } from 'src/auth/decorators';
 import { CreateEventDto, UpdateEventDto } from './dto';
-import { JwtGuard } from 'src/auth/guards';
+import { JwtGuard, RolesGuard } from 'src/auth/guards';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('event')
@@ -21,7 +21,8 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin', 'SuperAdmin')
   @ApiBearerAuth()
   async createEventPost(
     @GetUserId() userId: string,
@@ -31,19 +32,20 @@ export class EventController {
   }
 
   @Get()
-  @UseGuards(JwtGuard)
   async getAllEvents(@Query('limit', ParseIntPipe) limit: number) {
     return this.eventService.getAllEvents(limit);
   }
 
   @Delete('/:id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin', 'SuperAdmin')
   async deleteEvent(@Param('id', ParseIntPipe) id: number) {
     return this.eventService.deleteEventById(id);
   }
 
   @Put('/:id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin', 'SuperAdmin')
   async updateEvent(
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
