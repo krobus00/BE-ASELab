@@ -46,8 +46,8 @@ export class AuthService {
         photo_url: picture,
         role: {
           connectOrCreate: {
-            where: { name: 'GUEST' },
-            create: { name: 'GUEST' },
+            where: { name: 'Guest' },
+            create: { name: 'Guest' },
           },
         },
       },
