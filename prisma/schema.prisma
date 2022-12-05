@@ -43,6 +43,7 @@ model Role {
 model Event {
   id          Int      @id @default(autoincrement())
   title       String
+  tags        String[]
   description String?
   start_date  DateTime
   end_date    DateTime

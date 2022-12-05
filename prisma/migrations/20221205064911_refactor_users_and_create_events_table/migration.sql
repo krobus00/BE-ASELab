@@ -16,6 +16,7 @@ ADD COLUMN     "role_id" INTEGER NOT NULL;
 CREATE TABLE "events" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "tags" TEXT[],
     "description" TEXT,
     "start_date" TIMESTAMP(3) NOT NULL,
     "end_date" TIMESTAMP(3) NOT NULL,
