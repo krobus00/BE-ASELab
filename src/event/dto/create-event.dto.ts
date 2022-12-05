@@ -31,13 +31,13 @@ export class CreateEventDto {
   description?: string;
 
   @ApiProperty({
-    example: '2022-05-30',
+    example: new Date('2022-05-30').toISOString(),
   })
   @IsDateString()
   start_date: string;
 
   @ApiProperty({
-    example: '2022-06-27',
+    example: new Date('2022-06-30').toISOString(),
   })
   @IsDateString()
   end_date: string;
