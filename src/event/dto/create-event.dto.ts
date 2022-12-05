@@ -1,8 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   ArrayUnique,
   IsArray,
+  IsDate,
   IsDateString,
   IsOptional,
   IsString,
@@ -30,15 +32,17 @@ export class CreateEventDto {
   @IsOptional()
   description?: string;
 
+  @Type(() => Date)
   @ApiProperty({
-    example: new Date('2022-05-30').toISOString(),
+    example: '2022-05-30',
   })
-  @IsDateString()
-  start_date: string;
+  @IsDate()
+  start_date: Date;
 
+  @Type(() => Date)
   @ApiProperty({
-    example: new Date('2022-06-30').toISOString(),
+    example: '2022-06-25',
   })
-  @IsDateString()
-  end_date: string;
+  @IsDate()
+  end_date: Date;
 }
