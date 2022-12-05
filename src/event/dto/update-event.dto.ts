@@ -9,7 +9,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateEventDto {
+export class UpdateEventDto {
   @ApiProperty({
     example: 'ASELab Open Recruitment 2022',
   })
@@ -36,7 +36,7 @@ export class CreateEventDto {
     example: '2022-05-30',
   })
   @IsDate()
-  start_date?: Date;
+  start_date: Date;
 
   @Type(() => Date)
   @ApiProperty({

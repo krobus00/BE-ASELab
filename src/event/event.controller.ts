@@ -7,11 +7,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { GetUserId } from 'src/auth/decorators';
-import { CreateEventDto } from './dto';
+import { CreateEventDto, UpdateEventDto } from './dto';
 import { JwtGuard } from 'src/auth/guards';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -39,5 +40,15 @@ export class EventController {
   @UseGuards(JwtGuard)
   async deleteEvent(@Param('id', ParseIntPipe) id: number) {
     return this.eventService.deleteEventById(id);
+  }
+
+  @Put('/:id')
+  @UseGuards(JwtGuard)
+  async updateEvent(
+    @GetUserId() userId: string,
+    @Param('id', ParseIntPipe) id: number,
+    dto: UpdateEventDto,
+  ) {
+    return this.eventService.updateEventById(userId, id, dto);
   }
 }
