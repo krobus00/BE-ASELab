@@ -39,6 +39,7 @@ export class EventController {
   @Delete('/:id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
+  @ApiBearerAuth()
   async deleteEvent(@Param('id', ParseIntPipe) id: number) {
     return this.eventService.deleteEventById(id);
   }
@@ -46,6 +47,7 @@ export class EventController {
   @Put('/:id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
+  @ApiBearerAuth()
   async updateEvent(
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
