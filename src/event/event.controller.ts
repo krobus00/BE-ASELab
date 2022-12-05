@@ -14,8 +14,9 @@ import {
 import { GetUserId, Roles } from 'src/auth/decorators';
 import { CreateEventDto, UpdateEventDto } from './dto';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('events')
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
@@ -40,7 +41,7 @@ export class EventController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
   @ApiBearerAuth()
-  async deleteEvent(@Param('id', ParseIntPipe) id: number) {
+  async deleteEventPost(@Param('id', ParseIntPipe) id: number) {
     return this.eventService.deleteEventById(id);
   }
 
@@ -48,7 +49,7 @@ export class EventController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
   @ApiBearerAuth()
-  async updateEvent(
+  async updateEventPost(
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
     dto: UpdateEventDto,
