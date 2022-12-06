@@ -23,9 +23,9 @@ export class AuthService {
 
     const { sub, email, name, picture } = ticket.getPayload();
 
-    await this.upsertUser(sub, email, name, picture);
+    const user = await this.upsertUser(sub, email, name, picture);
 
-    const tokens = this.generateTokens({ sub, email });
+    const tokens = this.generateTokens({ sub, email, role: user.role.name });
 
     return tokens;
   }
@@ -36,7 +36,7 @@ export class AuthService {
     name?: string,
     picture?: string,
   ) {
-    await this.prisma.user.upsert({
+    return this.prisma.user.upsert({
       where: { email },
       update: {},
       create: {
@@ -46,8 +46,17 @@ export class AuthService {
         photo_url: picture,
         role: {
           connectOrCreate: {
-            where: { name: 'GUEST' },
-            create: { name: 'GUEST' },
+            where: { name: 'Guest' },
+            create: { name: 'Guest' },
+          },
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+        role: {
+          select: {
+            name: true,
           },
         },
       },

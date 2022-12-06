@@ -1,3 +1,4 @@
+import { RolesGuard } from './guards/roles.guard';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,6 +12,7 @@ import { JwtAccessStrategy } from './strategies';
   providers: [
     AuthService,
     JwtAccessStrategy,
+    RolesGuard,
     {
       provide: 'GOOGLE_CLIENT',
       inject: [ConfigService],
