@@ -52,7 +52,7 @@ export class EventController {
   async updateEventPost(
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
-    dto: UpdateEventDto,
+    @Body() dto: UpdateEventDto,
   ) {
     return this.eventService.updateEventById(userId, id, dto);
   }
