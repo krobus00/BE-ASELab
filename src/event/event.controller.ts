@@ -9,12 +9,15 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GetUserId, Roles } from 'src/auth/decorators';
 import { CreateEventDto, UpdateEventDto } from './dto';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('events')
 @Controller('event')
@@ -22,14 +25,41 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', nullable: false },
+        description: { type: 'string' },
+        start_date: { type: 'string', format: 'date-time', nullable: false },
+        end_date: { type: 'string', format: 'date-time', nullable: false },
+        tags: {
+          type: 'array',
+          minItems: 1,
+          uniqueItems: true,
+          items: {
+            type: 'string',
+            example: 'tag1',
+          },
+        },
+        thumbnail: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async createEventPost(
     @GetUserId() userId: string,
     @Body() dto: CreateEventDto,
+    @UploadedFile() thumbnail: Express.Multer.File,
   ) {
-    return this.eventService.createEventPost(userId, dto);
+    return this.eventService.createEventPost(userId, dto, thumbnail);
   }
 
   @Get()
