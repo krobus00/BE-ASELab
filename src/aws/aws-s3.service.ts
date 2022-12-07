@@ -24,6 +24,13 @@ export class AwsS3Service {
     return await this.S3Client.upload(params).promise();
   }
 
+  async getSignedUrl(key: string) {
+    return await this.S3Client.getSignedUrlPromise('getObject', {
+      Bucket: this.config.get('AWS_S3_BUCKET'),
+      Key: key,
+    });
+  }
+
   async getFile(key: string) {
     const params: S3.GetObjectRequest = {
       Bucket: this.config.get('AWS_S3_BUCKET'),
