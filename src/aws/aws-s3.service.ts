@@ -16,7 +16,7 @@ export class AwsS3Service {
       Bucket: this.config.get('AWS_S3_BUCKET'),
       Key: originalname,
       Body: buffer,
-      ACL: 'public-read',
+      ACL: 'private',
       ContentType: mimetype,
       ContentDisposition: 'inline',
     };
