@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AwsS3Service } from './aws-s3.service';
 import { ConfigService } from '@nestjs/config';
 import { AwsController } from './aws.controller';
 import { S3 } from 'aws-sdk';
 
+@Global()
 @Module({
   providers: [
     AwsS3Service,
@@ -24,5 +25,6 @@ import { S3 } from 'aws-sdk';
     },
   ],
   controllers: [AwsController],
+  exports: [AwsS3Service],
 })
 export class AwsModule {}
