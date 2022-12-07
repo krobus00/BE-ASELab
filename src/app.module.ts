@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { EventModule } from './event/event.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EventModule } from './event/event.module';
     }),
     AuthModule,
     EventModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
