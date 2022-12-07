@@ -78,12 +78,38 @@ export class EventController {
   @Put('/:id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
+  @ApiConsumes('multipart/form-data')
   @ApiBearerAuth()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', nullable: false },
+        description: { type: 'string' },
+        start_date: { type: 'string', format: 'date-time', nullable: false },
+        end_date: { type: 'string', format: 'date-time', nullable: false },
+        tags: {
+          type: 'array',
+          minItems: 1,
+          uniqueItems: true,
+          items: {
+            type: 'string',
+            example: 'tag1',
+          },
+        },
+        thumbnail: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async updateEventPost(
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateEventDto,
+    @UploadedFile() thumbnail: Express.Multer.File,
   ) {
-    return this.eventService.updateEventById(userId, id, dto);
+    return this.eventService.updateEventById(userId, id, dto, thumbnail);
   }
 }

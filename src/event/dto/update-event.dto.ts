@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -15,6 +15,9 @@ export class UpdateEventDto {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
+  @Transform(({ value }) => {
+    return value.trim().split(',');
+  })
   tags: string[];
 
   @IsOptional()

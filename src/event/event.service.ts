@@ -2,6 +2,7 @@ import { AwsS3Service } from './../aws/aws-s3.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { UpdateEventDto } from './dto';
 
 @Injectable()
 export class EventService {
@@ -55,13 +56,23 @@ export class EventService {
     return event;
   }
 
-  async updateEventById(userId: string, id: number, dto: CreateEventDto) {
+  async updateEventById(
+    userId: string,
+    id: number,
+    dto: UpdateEventDto,
+    thumbnail: Express.Multer.File,
+  ) {
+    const s3Response = await this.s3.uploadFile(thumbnail);
+
+    const signedThumbnailUrl = await this.s3.getSignedUrl(s3Response.Key);
+
     const event = await this.prisma.event.update({
       where: {
         id,
       },
       data: {
         ...dto,
+        thumbnail_url: signedThumbnailUrl,
         updated_by_id: userId,
       },
     });
