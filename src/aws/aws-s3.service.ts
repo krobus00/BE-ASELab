@@ -28,6 +28,7 @@ export class AwsS3Service {
     return await this.S3Client.getSignedUrlPromise('getObject', {
       Bucket: this.config.get('AWS_S3_BUCKET'),
       Key: key,
+      Expires: 60 * 60,
     });
   }
 
