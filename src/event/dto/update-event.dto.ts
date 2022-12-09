@@ -20,6 +20,7 @@ export class UpdateEventDto {
   })
   tags: string[];
 
+  @IsString()
   @IsOptional()
   description?: string;
 
