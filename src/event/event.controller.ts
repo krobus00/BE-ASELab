@@ -1,4 +1,3 @@
-import { EventService } from './event.service';
 import {
   Body,
   Controller,
@@ -13,11 +12,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { GetUserId, Roles } from 'src/auth/decorators';
-import { CreateEventDto, UpdateEventDto } from './dto';
-import { JwtGuard, RolesGuard } from 'src/auth/guards';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { GetUserId, Roles } from 'src/auth/decorators';
+import { JwtGuard, RolesGuard } from 'src/auth/guards';
+import { ThumbnailValidationPipe } from 'src/common/pipes';
+import { CreateEventDto, UpdateEventDto } from './dto';
+import { EventService } from './event.service';
 
 @ApiTags('events')
 @Controller('event')
@@ -57,7 +58,8 @@ export class EventController {
   async createEventPost(
     @GetUserId() userId: string,
     @Body() dto: CreateEventDto,
-    @UploadedFile() thumbnail: Express.Multer.File,
+    @UploadedFile(new ThumbnailValidationPipe())
+    thumbnail: Express.Multer.File,
   ) {
     return this.eventService.createEventPost(userId, dto, thumbnail);
   }
@@ -109,7 +111,7 @@ export class EventController {
     @GetUserId() userId: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateEventDto,
-    @UploadedFile() thumbnail: Express.Multer.File,
+    @UploadedFile(new ThumbnailValidationPipe()) thumbnail: Express.Multer.File,
   ) {
     return this.eventService.updateEventById(userId, id, dto, thumbnail);
   }
