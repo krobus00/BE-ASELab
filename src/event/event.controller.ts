@@ -78,6 +78,7 @@ export class EventController {
   @Put('/:id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('Admin', 'SuperAdmin')
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @ApiConsumes('multipart/form-data')
   @ApiBearerAuth()
   @ApiBody({
