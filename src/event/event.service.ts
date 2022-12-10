@@ -18,7 +18,7 @@ export class EventService {
     const s3Response = await this.s3.uploadFile(thumbnail);
 
     const signedThumbnailUrl = await this.s3.getSignedUrl(s3Response.Key);
-
+    
     const event = await this.prisma.event.create({
       data: {
         title,
@@ -65,7 +65,7 @@ export class EventService {
     const s3Response = await this.s3.uploadFile(thumbnail);
 
     const signedThumbnailUrl = await this.s3.getSignedUrl(s3Response.Key);
-
+    
     const event = await this.prisma.event.update({
       where: {
         id,
