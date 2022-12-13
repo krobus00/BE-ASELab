@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { EventModule } from './event/event.module';
 import { AwsModule } from './aws/aws.module';
+import { MemberModule } from './member/member.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AwsModule } from './aws/aws.module';
     AuthModule,
     EventModule,
     AwsModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
