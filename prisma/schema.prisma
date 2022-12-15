@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String  @id
-  email     String  @unique
-  name      String?
-  photo_url String?
-  role      Role    @relation(fields: [role_id], references: [id])
-  role_id   Int
+  id          String    @id
+  email       String    @unique
+  name        String?
+  photo_url   String?
+  role        Role      @relation(fields: [role_id], references: [id])
+  role_id     Int
+  division    Division? @relation(fields: [division_id], references: [id])
+  division_id Int?
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -59,4 +61,13 @@ model Event {
   deleted_at DateTime?
 
   @@map("events")
+}
+
+model Division {
+  id            Int     @id @default(autoincrement())
+  name          String  @unique
+  thumbnail_url String?
+  users         User[]
+
+  @@map("divisions")
 }
