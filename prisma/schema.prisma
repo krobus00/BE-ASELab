@@ -24,6 +24,8 @@ model User {
 
   created_events Event[] @relation(name: "EventsCreatedBy")
   updated_events Event[] @relation(name: "EventsUpdatedBy")
+  created_blogs  Blog[]  @relation(name: "BlogsCreatedBy")
+  updated_blogs  Blog[]  @relation(name: "BlogsUpdatedBy")
 
   @@map("users")
 }
@@ -59,4 +61,25 @@ model Event {
   deleted_at DateTime?
 
   @@map("events")
+}
+
+model Blog {
+  id                  Int      @id @default(autoincrement())
+  title               String
+  tags                String[]
+  thumbnail           String
+  description         String?
+  blog_date           DateTime
+  estimated_read_time String?
+
+  created_by    User   @relation(name: "BlogsCreatedBy", fields: [created_by_id], references: [id])
+  created_by_id String
+  updated_by    User   @relation(name: "BlogsUpdatedBy", fields: [updated_by_id], references: [id])
+  updated_by_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@map("blogs")
 }
