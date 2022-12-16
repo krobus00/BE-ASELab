@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String  @id
-  email     String  @unique
-  name      String?
-  photo_url String?
-  role      Role    @relation(fields: [role_id], references: [id])
-  role_id   Int
+  id          String    @id
+  email       String    @unique
+  name        String?
+  photo_url   String?
+  role        Role      @relation(fields: [role_id], references: [id])
+  role_id     Int
+  division    Division? @relation(fields: [division_id], references: [id])
+  division_id Int?
 
   published_products Product[] @relation(name: "PublishedProducts")
   created_products Product[] @relation(name: "CreatedProducts")
@@ -65,6 +67,7 @@ model Event {
   @@map("events")
 }
 
+
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
@@ -83,4 +86,13 @@ model Product {
   updated_at DateTime @updatedAt
   deleted_at DateTime?
   @@map("products")
+}
+
+model Division {
+  id            Int     @id @default(autoincrement())
+  name          String  @unique
+  thumbnail_url String?
+  users         User[]
+
+  @@map("divisions")
 }
