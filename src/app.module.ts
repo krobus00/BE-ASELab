@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { EventModule } from './event/event.module';
 import { AwsModule } from './aws/aws.module';
 import { BlogModule } from './blog/blog.module';
+import { MemberModule } from './member/member.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { BlogModule } from './blog/blog.module';
     AuthModule,
     EventModule,
     AwsModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
