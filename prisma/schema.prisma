@@ -88,6 +88,7 @@ model Blog {
   deleted_at DateTime?
 
   @@map("blogs")
+}
 
 model Product {
   id          Int      @id @default(autoincrement())
