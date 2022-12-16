@@ -20,12 +20,16 @@ model User {
   division    Division? @relation(fields: [division_id], references: [id])
   division_id Int?
 
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  published_products Product[] @relation(name: "PublishedProducts")
+  created_products Product[] @relation(name: "CreatedProducts")
+  updated_products Product[] @relation(name: "UpdatedProducts")
 
   created_events Event[] @relation(name: "EventsCreatedBy")
   updated_events Event[] @relation(name: "EventsUpdatedBy")
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 
   @@map("users")
 }
@@ -61,6 +65,27 @@ model Event {
   deleted_at DateTime?
 
   @@map("events")
+}
+
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  thumbnail   String?
+  link        String?
+  tags        String[]
+  published_by    User   @relation(name: "PublishedProducts", fields: [published_by_id], references: [id])
+  published_by_id String
+  published_at DateTime @default(now())
+  created_by    User   @relation(name: "CreatedProducts", fields: [created_by_id], references: [id])
+  created_by_id String
+  updated_by    User   @relation(name: "UpdatedProducts", fields: [updated_by_id], references: [id])
+  updated_by_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  @@map("products")
 }
 
 model Division {
